@@ -1,0 +1,14 @@
+Nalezy przygotowac skrypt php ktory znjadzie blogi z podanej listy (blogs-intput.txt) publikujace artykuly na temat Corona-Virusa (na podstawie keywords.txt).
+
+Wyniki powinny byc zapisane w pliku results.csv w nastepujacym formacie:
+
+unaufschiebbar.de,x,100546
+
+gdzie x okresla skumulowana liczbe wystapien szukanych hasel na konkretnej stronie.
+
+Wyszukiwanie powinno ograniczac sie tylko do strony glownej dostepnej bezposrednio pod wywolanym adresem url.
+
+Skrypt powinien byc uruchamiany z poziomu php cli.
+
+
+
