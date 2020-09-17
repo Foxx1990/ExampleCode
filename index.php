@@ -81,7 +81,9 @@ class SearchKeywords
             foreach ($this->keywords as $key) {
                 isset($allWordsArray[$key]) ? $counts = $counts + $allWordsArray[$key] : null;
             }
-            array_push($this->result, [$value[0], $counts, $value[1][0]]);
+            if($counts > 0) {
+                array_push($this->result, [$value[0], $counts, $value[1][0]]);
+            }
         }
     }
 
