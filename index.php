@@ -1,5 +1,4 @@
 <?php
-define('NAME', 'http://');
 
 class SearchKeywords
 {
@@ -9,7 +8,7 @@ class SearchKeywords
     /**
      * @return array|false
      */
-    public function getFileToArray()
+    public function getFileToArray(): array
     {
         header('Content-type: application/json');
 
@@ -23,7 +22,6 @@ class SearchKeywords
             $value = explode(':', $value);
             $contents_arr[$key] = [rtrim($value[1], "\r"), [$value[0]]];
         }
-        //var_dump($contents_arr);
         return $contents_arr;
     }
 
@@ -34,7 +32,7 @@ class SearchKeywords
      *
      * @return array 0 => HTTP Response Code, 1 => HTML
      */
-    protected function getContent($url)
+    protected function getContent($url): array
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -57,36 +55,41 @@ class SearchKeywords
      * @param $html
      * @return string
      */
-    public function parseBody($html)
+    public function parseBody($html): string
     {
         libxml_use_internal_errors(true);
-        $doc = new \DOMDocument();
+        $doc = new DOMDocument();
         $doc->loadHTML($html);
         $doc->preserveWhiteSpace = false;
-
         $body = $doc->getElementsByTagName('body')->item(0)->nodeValue;
 
         return strip_tags($body);
     }
 
-    public function countKeywords()
+    /**
+     * Count words based on variable $keywords and text file blogs-input.txt.
+     * @return void
+     */
+    public function countKeywords(): void
     {
-        $allWordsArray = 0;
-        $counts = 0;
         foreach ($this->getFileToArray() as $keys => $value) {
-            $response = $this->getContent(NAME . $value[0]);
+            $counts = 0;
+            $response = $this->getContent($value[0]);
             $bodyText = $this->parseBody($response[1]);
 
+            $allWordsArray = array_count_values(str_word_count(strtolower($bodyText), 1));
             foreach ($this->keywords as $key) {
-                //$counts = substr_count($response[1],$key);
-                $allWordsArray += str_word_count($bodyText, 0, $key);
-                $counts = count($allWordsArray);
+                isset($allWordsArray[$key]) ? $counts = $counts + $allWordsArray[$key] : null;
             }
-            $this->result = [[$value[0], $counts, $value[1][0]]];
+            array_push($this->result, [$value[0], $counts, $value[1][0]]);
         }
     }
 
-    public function saveToFIle()
+    /**
+     * Save to file 'result.csv'
+     *
+     */
+    public function saveToFIle(): void
     {
         $fp = fopen('result.csv', 'w');
 
@@ -94,6 +97,7 @@ class SearchKeywords
             fputcsv($fp, $fields);
         }
         fclose($fp);
+        echo "Done";
     }
 }
 
