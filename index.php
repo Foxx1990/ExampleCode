@@ -51,22 +51,6 @@ class SearchKeywords
     }
 
     /**
-     * Remove HTML tags.
-     * @param $html
-     * @return string
-     */
-    public function parseBody($html): string
-    {
-        libxml_use_internal_errors(true);
-        $doc = new DOMDocument();
-        $doc->loadHTML($html);
-        $doc->preserveWhiteSpace = false;
-        $body = $doc->getElementsByTagName('body')->item(0)->nodeValue;
-
-        return strip_tags($body);
-    }
-
-    /**
      * Count words based on variable $keywords and text file blogs-input.txt.
      * @return void
      */
@@ -75,9 +59,9 @@ class SearchKeywords
         foreach ($this->getFileToArray() as $keys => $value) {
             $counts = 0;
             $response = $this->getContent($value[0]);
-            $bodyText = $this->parseBody($response[1]);
-
-            $allWordsArray = array_count_values(str_word_count(strtolower($bodyText), 1));
+            $bodyText = $response[1];
+            $allWordsArray = array_count_values(str_word_count(strip_tags(strtolower($bodyText)), 1));
+            
             foreach ($this->keywords as $key) {
                 isset($allWordsArray[$key]) ? $counts = $counts + $allWordsArray[$key] : null;
             }
