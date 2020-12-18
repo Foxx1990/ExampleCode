@@ -1,3 +1,11 @@
+<!--
+Nalezy przygotowac skrypt php ktory znjadzie blogi z podanej listy (blogs-intput.txt) publikujace artykuly na temat Corona-Virusa .
+Wyniki powinny byc zapisane w pliku results.csv w nastepujacym formacie:
+unaufschiebbar.de,x,100546
+gdzie x okresla skumulowana liczbe wystapien szukanych hasel na konkretnej stronie.
+Wyszukiwanie powinno ograniczac sie tylko do strony glownej dostepnej bezposrednio pod wywolanym adresem url.
+Skrypt powinien byc uruchamiany z poziomu php cli.
+-->
 <?php
 
 class SearchKeywords
@@ -61,11 +69,11 @@ class SearchKeywords
             $response = $this->getContent($value[0]);
             $bodyText = $response[1];
             $allWordsArray = array_count_values(str_word_count(strip_tags(strtolower($bodyText)), 1));
-            
+
             foreach ($this->keywords as $key) {
                 isset($allWordsArray[$key]) ? $counts = $counts + $allWordsArray[$key] : null;
             }
-            if($counts > 0) {
+            if ($counts > 0) {
                 array_push($this->result, [$value[0], $counts, $value[1][0]]);
             }
         }
