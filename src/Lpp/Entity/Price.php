@@ -52,6 +52,73 @@ class Price
     } 
     public function getDueDate() {
 
-        return $this->dueDate;
+        return $this->getDateToObject($this->dueDate);
+    }
+
+    /**
+     * setDueDate
+     *
+     * @param  mixed $date
+     * @return void
+     */
+    public function setDueDate($date) {
+        $this->dueDate = $date;
+    }
+    
+    /**
+     * getArrivalDate
+     *
+     * @return void
+     */
+    public function getArrivalDate() {
+       return $this->getDateToObject($this->arrivalDate);
+    }    
+
+    /**
+     * setArrivalDate
+     *
+     * @param  mixed $date
+     * @return void
+     */
+    public function setArrivalDate($date) {
+        $this->arrivalDate = $date;
+    } 
+
+    /**
+     * getPriceInEuro
+     *
+     * @return int
+     */
+    public function getPriceInEuro(): int {
+       return $this->priceInEuro;
+    }
+    
+    /**
+     * setPriceInEuro
+     *
+     * @param  mixed $price
+     * @return void
+     */
+    public function setPriceInEuro( int $price) {
+        $this->priceInEuro = $price;
+    }
+    
+    /**
+     * getDescription
+     *
+     * @return string
+     */
+    public function getDescription(): string {
+       return $this->description;
+    }
+    
+    /**
+     * setDescription
+     *
+     * @param  mixed $description
+     * @return void
+     */
+    public function setDescription(string $description) {
+        $this->description = $description;
     }
 }
