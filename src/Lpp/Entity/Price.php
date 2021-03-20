@@ -38,7 +38,6 @@ class Price
      */
     private $dueDate;
 
-
     /**
      * getDateToObject
      *
